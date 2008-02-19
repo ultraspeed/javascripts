@@ -49,7 +49,7 @@ var Init = {
         // if it's the search-text, it will have a different background
         if ( $(this).attr("id") == "search-text" ) {
           $(this).css({
-            'background': "url(/nameroute/site/images/site/input_bg.png)",
+            'background': "url(/images/site/input_bg.png)",
             'color': "#777"
           });
         }
