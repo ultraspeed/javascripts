@@ -1,7 +1,14 @@
 <!--//--><![CDATA[//><!--
 // nameroute.com scripts - February 2008
 
-
+/*
+  TODO 
+  * relative paths for images by using link[rel=home].attr("href")
+  * image preloading
+  * external_links using the same link tag...
+  * slide-ins for the domain checker
+  * preload nav links bg
+*/
 
 var Init = {
   preload_stickers : function() {
@@ -117,25 +124,20 @@ var Domains = {
       else {
         $.ajax({
           type: "POST",
-          url: "/scripts/disabled/check_domain.php",
+          url: "scripts/disabled/check_domain.php",
           data: "domain=" + domain + "&tld=" + tld,
-          success: function(result) {
-            if ( $('#domainlist.ajax') || $('.zemError') ) $('#domainlist.ajax, .zemError').remove();
-            $("#check_domain").after(result);
-            Init.table_striping();
-            Init.table_hovering();
-          },
-          error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert(errorThrown);
-          }
+          beforeSend: Domains.start_domain_check,
+          complete: Domains.stop_domain_check,
+          success: Domains.domain_check_success,
+          error: Domains.domain_check_error
         });
         return false;
       }
     });
   },
   
+  // when a user clicks inside input to enter domain name after error, clear the error text & return the input text color to the initial one
   domain_after_error : function() {
-    // when a user clicks inside input to enter domain name after error, clear the error text & return the input text color to the initial one
     $('#domain').focus(function() {
       if ( $(this).attr('value') == "Please enter a domain name" ) {
         $(this).attr('value', "").css('color',"#000");
@@ -143,31 +145,48 @@ var Domains = {
     });
   },
   
+  // stuff to do if our check_domain AJAX call was successful
+  domain_check_success : function(result) {
+    if ( $('#domainlist.ajax') || $('.zemError') ) $('#domainlist.ajax, .zemError').remove();
+    $("#check_domain").after(result);
+    Init.table_striping();
+    Init.table_hovering();
+  },
+  
+  // stuff to do if our check_domain AJAX call was NOT successful
+  domain_check_error : function() {
+    alert(errorThrown);
+  },
+  
   // controls our spinner and form action on submit
-  spinner : function() {
+  create_spinner : function() {
     if ( $('#check_domain') ) {
       // attach our spinner for AJAX if check_domain form exists
       $('#check_domain .search-button').after('<img src="/images/site/spinner_moz.gif" alt="Domain Check Mozilla-style spinner" id="check_domain_spinner" />');
       $('#check_domain_spinner').hide();
-      $('#check_domain_spinner').ajaxStart( function() {
-        // show spinner
-        $(this).show();
-        // style link & disable clicks
-        $('#check_domain .search-button').attr('disabled', "disabled").text('Searching...').css({
-            'background' : "#000",
-            'cursor' : "default"
-          });
-      });
-      $('#check_domain_spinner').ajaxStop( function() {
-        // hide spinner
-        $(this).hide();
-        // re-enable link
-        $('#check_domain .search-button').attr('disabled', "").text('Search').css({
-            'background' : "#3996E5",
-            'cursor' : "pointer"
-          });
-      });
     }
+  },
+  
+  // starts our domain checking
+  start_domain_check : function() {
+    // show spinner
+    $('#check_domain_spinner').show();
+    // style link & disable clicks
+    $('#check_domain .search-button').attr('disabled', "disabled").text('Searching...').css({
+        'background' : "#000",
+        'cursor' : "default"
+      });
+  },
+  
+  // finishes domain checking
+  stop_domain_check : function() {
+    // hide spinner
+    $('#check_domain_spinner').hide();
+    // re-enable link
+    $('#check_domain .search-button').attr('disabled', "").text('Search').css({
+        'background' : "#3996E5",
+        'cursor' : "pointer"
+      });
   }
 }
 
@@ -188,7 +207,7 @@ $(function() {
   Domains.all_domains_toggle();
   Domains.check_domain();
   Domains.domain_after_error();
-  Domains.spinner();
+  Domains.create_spinner();
   
 });
 
