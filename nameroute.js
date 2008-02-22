@@ -154,8 +154,8 @@ var Domains = {
   },
   
   // stuff to do if our check_domain AJAX call was NOT successful
-  domain_check_error : function() {
-    alert(errorThrown);
+  domain_check_error : function(result) {
+    alert(result);
   },
   
   // controls our spinner and form action on submit
