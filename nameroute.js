@@ -3,16 +3,15 @@
 
 /*
   TODO 
-  * relative paths for images by using link[rel=home].attr("href")
-  * image preloading
   * external_links using the same link tag...
   * slide-ins for the domain checker
-  * preload nav links bg
 */
 
+
+
 var Init = {
-  preload_stickers : function() {
-    $.preloadImages("/images/site/stickers/free_builder_over.png", "/images/site/stickers/free_web_space_over.png", "/images/site/stickers/pop3_webmail_over.png");
+  website_url : function() {
+    return $('link[rel=home]').attr("href");
   },
   
   external_links : function() {
@@ -56,7 +55,7 @@ var Init = {
         // if it's the search-text, it will have a different background
         if ( $(this).attr("id") == "search-text" ) {
           $(this).css({
-            'background': "url(/images/site/input_bg.png)",
+            'background': "url(" + Init.website_url() + "images/site/input_bg.png)",
             'color': "#777"
           });
         }
@@ -124,7 +123,7 @@ var Domains = {
       else {
         $.ajax({
           type: "POST",
-          url: "scripts/disabled/check_domain.php",
+          url: Init.website_url() + "scripts/disabled/check_domain.php",
           data: "domain=" + domain + "&tld=" + tld,
           beforeSend: Domains.start_domain_check,
           complete: Domains.stop_domain_check,
@@ -162,7 +161,7 @@ var Domains = {
   create_spinner : function() {
     if ( $('#check_domain') ) {
       // attach our spinner for AJAX if check_domain form exists
-      $('#check_domain .search-button').after('<img src="/images/site/spinner_moz.gif" alt="Domain Check Mozilla-style spinner" id="check_domain_spinner" />');
+      $('#check_domain .search-button').after('<img src="' + Init.website_url() + 'images/site/spinner_moz.gif" alt="Domain Check Mozilla-style spinner" id="check_domain_spinner" />');
       $('#check_domain_spinner').hide();
     }
   },
@@ -194,7 +193,6 @@ var Domains = {
 
 $(function() {
   
-  Init.preload_stickers();
   Init.external_links();
   Init.table_striping();
   Init.table_hovering();
@@ -210,17 +208,6 @@ $(function() {
   Domains.create_spinner();
   
 });
-
-
-
-// jQuery external function that helps with preloading images
-jQuery.preloadImages = function()
-{
-  for(var i = 0; i<arguments.length; i++)
-  {
-    jQuery("<img>").attr("src", arguments[i]);
-  }
-}
 
 
 
