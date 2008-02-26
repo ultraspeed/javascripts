@@ -1,12 +1,6 @@
 <!--//--><![CDATA[//><!--
 // nameroute.com scripts - February 2008
 
-/*
-  TODO 
-  * external_links using the same link tag...
-  * slide-ins for the domain checker
-*/
-
 
 
 var Init = {
@@ -14,8 +8,12 @@ var Init = {
     return $('link[rel=home]').attr("href");
   },
   
+  domain_name : function() {
+    return Init.website_url().split('/')[2]; // returns e.g. www.nameroute.co.uk, geri.ultraspeed.co.uk etc.
+  },
+  
   external_links : function() {
-    $('a').not("a[href*='nameroute.co.uk']").not("a[href*='nameroute.com']").not("a[href*='ultraspeed.co.uk']").not("a[href*='ultraspeed.com']").click( function() {
+    $('a').not("a[href*='" + Init.domain_name() + "']").click( function() {
       window.open(this.href); return false;
     });
   },
@@ -87,27 +85,6 @@ var Init = {
 
 
 var Domains = {
-  // hide not_so_common domains by default
-  not_so_common : function() {
-    $('.not_so_common').hide();
-  },
-  
-  // adding our show/hide not_so_common 
-  all_domains_toggle : function() {
-    $('#pricelist tbody tr:last').after('<tr><th colspan="4" scope="row"><a href="#" id="show_hide_not_so_common">[+] Show all domain names</a></th></tr>');
-    $("#show_hide_not_so_common").toggle(
-      function () {
-        $('.not_so_common').show();
-        $(this).html('[-] Show only commmon domain names');
-        return false;
-      },
-      function () {
-        $('.not_so_common').hide();
-        $(this).html('[+] Show all domain names');
-        return false;
-      }
-    );
-  },
   
    // prevent our domain_check form to submit and display results here
   check_domain : function() {
@@ -146,8 +123,17 @@ var Domains = {
   
   // stuff to do if our check_domain AJAX call was successful
   domain_check_success : function(result) {
-    if ( $('#domainlist.ajax') || $('.zemError') ) $('#domainlist.ajax, .zemError').remove();
-    $("#check_domain").after(result);
+    if ( $('#domainlist.ajax').length ) {
+      $('#domainlist.ajax').replaceWith(result);
+    }
+    else if ( $('.zemError').length ) {
+      $('.zemError').replaceWith(result);
+      $('#domainlist.ajax').hide().slideDown("slow");
+    }
+    else {
+      $('#check_domain').after(result);
+      $('#domainlist.ajax').hide().slideDown("slow");
+    }
     Init.table_striping();
     Init.table_hovering();
   },
@@ -201,8 +187,6 @@ $(function() {
   Init.ie_submit_button_fix();
   Init.round_corners();
   
-  Domains.not_so_common();
-  Domains.all_domains_toggle();
   Domains.check_domain();
   Domains.domain_after_error();
   Domains.create_spinner();

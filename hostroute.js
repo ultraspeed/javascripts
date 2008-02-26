@@ -1,5 +1,5 @@
 <!--//--><![CDATA[//><!--
-// hostroute.com scripts - November 2007
+// hostroute.com scripts - February 2007
 
 $(function() {
   
@@ -18,7 +18,7 @@ $(function() {
   
   // :focus fix for IE
   if (jQuery.browser.msie) { 
-    $("input, textarea").focus(function(){
+    $("input, textarea").not("input[type=checkbox]").focus(function(){
       if ( $(this).attr("id") == "search-text" ) {
         $(this).css({
           'background': "#FFF",
