@@ -13,7 +13,7 @@ var Init = {
   },
   
   external_links : function() {
-    $('a').not("a[href*='" + Init.domain_name() + "']").not("orders.hostroute.net").click( function() {
+    $('a').not("a[href*='" + Init.domain_name() + "']").not("order.hostroute.net").click( function() {
       window.open(this.href); return false;
     });
   },
