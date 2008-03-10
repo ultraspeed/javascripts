@@ -1,5 +1,5 @@
 <!--//--><![CDATA[//><!--
-// nameroute.com scripts - February 2008
+// nameroute.com scripts - March 2008
 
 
 
@@ -76,6 +76,24 @@ var Init = {
         $(this).css('background', "#3996E5");
       }
     );
+  },
+  
+  prevent_empty_search_submit : function() {
+    // catch empty submits on search forms
+    // prevent our domain_check form to submit and display results here
+    $('#search').submit(function() {
+      if ( !$('#search-text').attr('value') || $('#search-text').attr('value') == "Please enter a search term" ) {
+        $('#search-text').attr('value', "Please enter a search term").css('color', "#000");
+        // so that the form won't get submitted
+        return false;
+      }
+    });
+    // when a user clicks inside input to enter a search term after tge error, clear the error text & return the input text color to the initial one
+    $('#search-text').focus(function() {
+      if ( $(this).attr('value') == "Please enter a search term" ) {
+        $(this).attr('value', "").css('color',"#000");
+      }
+    });
   },
   
   round_corners : function() {
@@ -185,6 +203,7 @@ $(function() {
   Init.last_paragraph();
   Init.ie_focus_fix();
   Init.ie_submit_button_fix();
+  Init.prevent_empty_search_submit();
   Init.round_corners();
   
   Domains.check_domain();
