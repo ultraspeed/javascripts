@@ -23,7 +23,7 @@ var Init = {
   },
   
   table_hovering : function() {
-    $('tbody tr').mouseover(function() { $(this).addClass("over"); }).mouseout(function() { $(this).removeClass("over"); });
+    $('tbody tr').not('.no_hover').mouseover(function() { $(this).addClass("over"); }).mouseout(function() { $(this).removeClass("over"); });
   },
   
   last_paragraph : function() {
@@ -157,8 +157,20 @@ var Domains = {
   },
   
   // stuff to do if our check_domain AJAX call was NOT successful
-  domain_check_error : function(result) {
-    alert(result);
+  domain_check_error : function() {
+    // set our error message
+    result = '<div class="zemError">Sorry, there was an error with our domain checker. Please try again later.</div>';
+    
+    if ( $('#domainlist.ajax').length ) {
+      $('#domainlist.ajax').replaceWith(result);
+    }
+    else if ( $('.zemError').length ) {
+      $('.zemError').replaceWith(result);
+    }
+    else {
+      $('#check_domain').after(result);
+      $('.zemError').hide().slideDown("slow");
+    }
   },
   
   // controls our spinner and form action on submit
