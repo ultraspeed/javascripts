@@ -3,6 +3,7 @@
 
 
 var Init = {
+  // currently disabled
   preload_images : function() {
     $.preloadImages("/images/site/x.png", "/images/site/y.png", "/images/site/z.png");
   },
@@ -98,6 +99,16 @@ var Init = {
   
   round_corners : function() {
     $('.login').corner("10px");
+  },
+  
+  tooltips : function() {
+    $('a.tooltip').tooltip({
+      track: true,
+      delay: 0,
+      showURL: false,
+      // showBody: " - ",
+      opacity: 0.95
+    });
   }
 }
 
@@ -122,6 +133,7 @@ $(function() {
   Init.ie_submit_button_fix();
   Init.prevent_empty_search_submit();
   Init.round_corners();
+  Init.tooltips();
 });
 
 
