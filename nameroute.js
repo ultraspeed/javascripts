@@ -98,6 +98,16 @@ var Init = {
   
   round_corners : function() {
     $('.login').corner("10px");
+  },
+  
+  tooltips : function() {
+    $('a.tooltip').tooltip({
+      track: true,
+      delay: 0,
+      showURL: false,
+      // showBody: " - ",
+      opacity: 0.95
+    });
   }
 }
 
@@ -217,6 +227,7 @@ $(function() {
   Init.ie_submit_button_fix();
   Init.prevent_empty_search_submit();
   Init.round_corners();
+  Init.tooltips();
   
   Domains.check_domain();
   Domains.domain_after_error();
