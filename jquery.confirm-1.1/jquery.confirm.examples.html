@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+<title>Nadia Alramli's Blog | jQuery Confirm Plugin</title>
+<style type="text/css" media="all">@import "style.css";</style>
+<script type="text/javascript" src="jquery.confirm.examples_files/jquery_002.js"></script>
+<script type="text/javascript" src="jquery.confirm.examples_files/jquery.js"></script>
+<script>
+  $(document).ready(function() {
+    $('tbody tr:not(:has(th)):odd').addClass('odd');
+    $('#examples a').click(function() {
+      alert('click');
+      return false;
+    })
+
+    $('#example1>a').confirm();
+    $('#example2>input[type=button]').click(function() {
+      $(this).remove();
+    });
+    $('#example2>input[type=button]').confirm({
+      msg:'Do you really want to delete this button?',
+      timeout:3000
+    });
+    $('#example3>span').mouseover(function() {
+      $(this).html('Here is the offer');
+    });
+    $('#example3>span').confirm({
+      msg:'See my interesting offer?',
+      stopAfter:'ok',
+      eventType:'mouseover',
+      timeout:3000,
+      buttons: {
+        ok:'Sure',
+        cancel:'No thanks',
+
+        separator:'  '
+      }
+    });
+    $('#example4>a').confirm({
+      timeout:3000, dialogShow:'fadeIn',
+      dialogSpeed:'slow',
+      buttons: {
+        wrapper:'<button></button>',
+        separator:'  '
+      }  
+    });
+
+  });
+</script>
+</head><body>
+
+<h1>jQuery Confirm Plugin</h1>
+
+<div class="block download">
+<h2>Download</h2>
+<table>
+<tbody>
+<tr><td><a href="http://nadiaspot.com/jquery/confirm/jquery.confirm.js">Confirm 1.0</a></td><td>3.3 KB</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="about">
+<h2>About</h2>
+<p>This plugin displays a confirmation message in place before doing an
+action. It does not require adding any extra code apart from a call to
+the plugin itself. One call to $(element).confirm() will do the magic.
+Also, this plugin doesn't require you to provide a callback function;
+it figures it out on its own.<br>You can check <a href="#examples">the examples</a> for more info.</p>
+</div>
+<h2>How does it work?</h2>
+To put it simply, it saves a copy of all event handlers bound to the
+element, unbinds them and binds itself instead. A confirmation dialog
+is displayed when the user triggers the action. If the user chooses to
+proceed with the action, it rebinds the handlers again and triggers the
+event. If the user chooses to cancel the action, the dialog disappears.
+<h2>Docs</h2>
+<code>
+$(element).confirm(options)
+</code>
+
+
+<table>
+<thead><tr><th colspan="5" class="heading">options</th></tr></thead>
+<tbody>
+<tr><th>Name</th><th>Type</th><th>Optional</th><th>Description</th><th>Default Value</th></tr>
+<tr class="odd"><td>msg</td><td>String</td><td>Optional</td><td>Confirmation message</td><td class="string">'Are you sure?'</td></tr>
+<tr><td>stopAfter</td><td>string</td><td>Optional</td><td>Determines when the confirmation dialog will stop being promoted.<br> Possible values ('never', 'ok', 'cancel', 'once')</td><td class="string">'never'</td></tr>
+<tr class="odd"><td>wrapper</td><td>String</td><td>Optional</td><td>Dialog wrapper</td><td class="string">'&lt;span&gt;&lt;/span&gt;'</td></tr>
+<tr><td>eventType</td><td>String</td><td>Optional</td><td>The event that triggers the confirmation</td><td class="string">'click'</td></tr>
+<tr class="odd"><td>dialogShow</td><td>String</td><td>Optional</td><td>Dialog displaying effect</td><td class="string">'show'</td></tr>
+<tr><td>dialogSpeed</td><td>String</td><td>Optional</td><td>Dialog displaying speed</td><td class="string">'fast'</td></tr>
+<tr class="odd"><td>timeout</td><td>Integer</td><td>Optional</td><td>Time in milliseconds to hide the confirmation dialog</td><td class="integer">0</td></tr>
+</tbody>
+<tbody>
+<tr><th colspan="5" class="heading">options.buttons</th></tr>
+<tr><td>ok</td><td>String</td><td>Optional</td><td>Ok caption</td><td class="string">'Yes'</td></tr>
+<tr class="odd"><td>cancel</td><td>String</td><td>Optional</td><td>Cancel caption</td><td class="string">'No'</td></tr>
+<tr><td>wrapper</td><td>String</td><td>Optional</td><td>Button wrapper</td><td class="string">'&lt;a href="#"&gt;&lt;/a&gt;'</td></tr>
+<tr class="odd"><td>separator</td><td>String</td><td>Optional</td><td>Separator between buttons</td><td class="string">'/'</td></tr>
+<tr><td>cls</td><td>String</td><td>Optional</td><td>Button class</td><td class="undefined">undefined</td></tr>
+</tbody>
+</table>
+
+<div id="examples">
+<h2>Examples</h2>
+
+<div class="block">
+<h3>First Example</h3>
+<pre><span class="comment">// The action.</span>
+$(<span class="string">'a'</span>).click(function() {
+  alert(<span class="string">'click'</span>);
+  return false;
+})
+
+<span class="comment">// The most simple use.</span>
+$(<span class="string">'a'</span>).confirm();
+</pre>
+<div id="example1" class="test">
+<a href="#">click me!</a>
+</div>
+</div>
+
+<div class="block">
+<h3>Second Example</h3>
+<pre><span class="comment">// The action.</span>
+$(<span class="string">'input[type=button]'</span>).click(function() {
+  $(this).remove();
+});
+
+$(<span class="string">'input[type=button]'</span>).confirm({
+  msg:<span class="string">'Do you really want to delete this button?'</span>,
+  timeout:<span class="integer">3000</span>
+});
+</pre>
+<div id="example2" class="test">
+<input value="click here to delete me" type="button">
+</div>
+</div>
+
+<div class="block">
+<h3>Third Example</h3>
+<pre><span class="comment">// The action.</span>
+$(<span class="string">'span'</span>).mouseover(function() {
+  $(this).html(<span class="string">'Here is the offer'</span>);
+});
+
+$(<span class="string">'span'</span>).confirm({
+  msg:<span class="string">'See my interesting offer?'</span>,
+  stopAfter:<span class="string">'ok'</span>,
+  eventType:<span class="string">'mouseover'</span>,
+  timeout:<span class="integer">3000</span>,
+  buttons: {
+    ok:<span class="string">'Sure'</span>,
+    cancel:<span class="string">'No thanks'</span>,
+    separator:<span class="string">'  '</span>
+  }
+});
+</pre>
+<div id="example3" class="test">
+<span>confirmation on mouseover.</span>
+</div>
+</div>
+
+<div class="block">
+<h3>Fourth Example</h3>
+<pre>$(<span class="string">'a'</span>).confirm({
+  timeout:<span class="integer">3000</span>,
+  dialogShow:<span class="string">'fadeIn'</span>,
+  dialogSpeed:<span class="string">'slow'</span>,
+  buttons: {
+    wrapper:<span class="string">'&lt;button&gt;&lt;/button&gt;'</span>,
+    separator:<span class="string">'  '</span>
+  }  
+});
+</pre>
+<div id="example4" class="test">
+<a href="#">click me!</a>
+</div>
+</div>
+</div>
+
+</body></html>
