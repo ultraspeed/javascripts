@@ -79,13 +79,14 @@ $(function() {
   
   
   // asks for confirmation before resetting the form
+  $('#reset_form a').click(function() {
+    window.location = $(this).attr('href');
+  });
   $('#reset_form a').confirm({
     msg:    'Are you sure? ',
     timeout: 6000
   });
-  $('#reset_form a').click(function() {
-    window.location = $(this).attr('href');
-  });
+
 });
 
 
