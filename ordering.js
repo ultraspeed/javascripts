@@ -1,16 +1,22 @@
 <!--//--><![CDATA[//><!--
 // Ultraspeed Group Ordering System 2008
 
+
+
 $(function() {
+  
   
   // Table striping (we don't want to stripe tfoot)
   $("table tr:odd").not(":first").addClass("odd");
   
+  
   // Hover over table rows (we don't want to hover over the thead)
   $("tr").not(":first").mouseover(function() { $(this).addClass("over"); }).mouseout(function() { $(this).removeClass("over"); });
   
+  
   // hides all elements that are marked to be hidden
   $(".hidden").hide();
+  
   
   // highlights the containers where the input is checked
   $("input:checked").each(function() {
@@ -19,10 +25,10 @@ $(function() {
         toggle_hiddens(this, "show");
       });
   
+  
   // highlight containers & unhide/hide elements marked hidden
   $(":radio, :checkbox").click(function() {
-        if ( $(this).attr("checked") == true && $("form").attr("id") != "step5" )
-        { 
+        if ( $(this).attr("checked") == true && $("form").attr("id") != "step5" ) { 
           // removes the highlight class from all radio buttons
           var radios = $(this).parents("dl").find(":radio");
           if ( radios ) radios.parent().removeClass("selected");
@@ -31,13 +37,13 @@ $(function() {
           
           $(this).parent().addClass("selected");
         }
-        else if ( $("form").attr("id") != "step5" )
-        {
+        else if ( $("form").attr("id") != "step5" ) {
           toggle_hiddens(this, "hide");
           
           $(this).parent().removeClass("selected");
         };
       });
+  
   
   // toggles selected class on input text fields, select.input and textareas (other inputs are handled by the above)
   $("input.text, select.input, textarea.input").focus(function() {
@@ -46,6 +52,7 @@ $(function() {
   $("input.text, select.input, textarea.input").blur(function() {
     $(this).parent().removeClass("selected");
   });
+  
   
   // creates the back button inside forms (won't be generated if JS is not enabled)
   if ( $("form").attr("id") != "step1" )
@@ -61,6 +68,7 @@ $(function() {
     });
   }
   
+  
   // IE fix for :hover on buttons
   if ( $.browser.msie ) {
     $("button").hover(
@@ -69,7 +77,18 @@ $(function() {
     );
   }
   
+  
+  // asks for confirmation before resetting the form
+  $('#reset_form a').confirm({
+    msg:    'Are you sure? ',
+    timeout: 6000
+  });
+  $('#reset_form a').click(function() {
+    window.location = $(this).attr('href');
+  });
 });
+
+
 
 // if there is a nearby hidden element, display it since the parent was checked
 function toggle_hiddens(element, action)
@@ -95,8 +114,5 @@ function toggle_hiddens(element, action)
         };
       }
 }
-
-// asks for confirmation before resetting the form
-
 
 //--><!]]>
