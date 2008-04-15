@@ -1,5 +1,5 @@
 <!--//--><![CDATA[//><!--
-// nameroute.com scripts - March 2008
+// nameroute.com scripts - April 2008
 
 
 
@@ -12,9 +12,19 @@ var Init = {
     return Init.website_url().split('/')[2]; // returns e.g. www.nameroute.co.uk, geri.ultraspeed.co.uk etc.
   },
   
+  empty_links : function() {
+    $('a[href=#]').mouseover(function() {
+      $(this).css('cursor', "default");
+    });
+  },
+  
   external_links : function() {
     $('a').not("a[href*='" + Init.domain_name() + "']").not("a[href*=order.hostroute.net]").click( function() {
-      window.open(this.href); return false;
+      // empty links do nothing
+      if ( $(this).attr("href") == "#" )
+        return false;
+      else
+        window.open(this.href); return false;
     });
   },
   
@@ -219,6 +229,7 @@ var Domains = {
 
 $(function() {
   
+  Init.empty_links();
   Init.external_links();
   Init.table_striping();
   Init.table_hovering();
