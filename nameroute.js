@@ -150,6 +150,56 @@ var Domains = {
     });
   },
   
+   // prevent our domain_common_check form to submit and display results here
+  check_common_domain : function() {
+    $('#check_common_domains').submit(function(){
+      var domain = $('#hidden_domain').attr('value');
+      var tld = $('#hidden_tld').attr('value');
+
+      if ( !domain || !tld ) {
+        // if we have an error, don't submit form
+        return false;
+      }
+      else {
+        $.ajax({
+          type: "POST",
+          url: Init.website_url() + "scripts/disabled/check_domain.php",
+          data: "domain=" + domain + "&tld=" + tld + "&extended=1",
+          beforeSend: Domains.start_domain_check,
+          complete: Domains.stop_domain_check,
+          success: Domains.domain_check_success,
+          error: Domains.domain_check_error
+        });
+        return false;
+      }
+    });
+  },
+  
+   // prevent our domain_all_check form to submit and display results here
+  check_all_domain : function() {
+    $('#check_all_domains').submit(function(){
+      var domain = $('#hidden_domain').attr('value');
+      var tld = $('#hidden_tld').attr('value');
+
+      if ( !domain || !tld ) {
+        // if we have an error, don't submit form
+        return false;
+      }
+      else {
+        $.ajax({
+          type: "POST",
+          url: Init.website_url() + "scripts/disabled/check_domain.php",
+          data: "domain=" + domain + "&tld=" + tld + "&all=1",
+          beforeSend: Domains.start_domain_check,
+          complete: Domains.stop_domain_check,
+          success: Domains.domain_check_success,
+          error: Domains.domain_check_error
+        });
+        return false;
+      }
+    });
+  },
+  
   // when a user clicks inside input to enter domain name after error, clear the error text & return the input text color to the initial one
   domain_after_error : function() {
     $('#domain').focus(function() {
@@ -174,6 +224,9 @@ var Domains = {
     }
     Init.table_striping();
     Init.table_hovering();
+    // line-up the check for the next form
+    Domains.check_common_domain();
+    Domains.check_all_domain();
   },
   
   // stuff to do if our check_domain AJAX call was NOT successful
