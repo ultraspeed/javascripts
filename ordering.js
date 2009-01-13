@@ -1,30 +1,22 @@
-<!--//--><![CDATA[//><!--
 // Ultraspeed Group Ordering System 2008
 
-
-
 $(function() {
-
 
   // Table striping (we don't want to stripe tfoot)
   $("table tr:odd").not(":first").addClass("odd");
 
-
   // Hover over table rows (we don't want to hover over the thead)
   $("tr").not(":first").mouseover(function() { $(this).addClass("over"); }).mouseout(function() { $(this).removeClass("over"); });
-
 
   // hides all elements that are marked to be hidden
   $(".hidden").hide();
 
-
   // highlights the containers where the input is checked
   $("input:checked").each(function() {
-        $(this).parent().addClass("selected");
-        // if there are any checked elements, un-hide it's children
-        toggle_hiddens(this, "show");
-      });
-
+    $(this).parent().addClass("selected");
+    // if there are any checked elements, un-hide it's children
+    toggle_hiddens(this, "show");
+  });
 
   // highlight containers & unhide/hide elements marked hidden
   $(":radio, :checkbox").click(function() {
