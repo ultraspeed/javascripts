@@ -1,4 +1,4 @@
-// Ultraspeed Group Ordering System 2008
+// Ultraspeed Group Ordering System 2008 //
 
 $(function() {
 
